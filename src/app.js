@@ -1,4 +1,5 @@
 import express from 'express'
+import conexao from '../infra/conexao'
 const app = express()
 
 //indcar para o express para usar o body com jason
@@ -13,10 +14,10 @@ app.use(express.json())
 //    {id:5,nome:'Prefeito',grupo:'P'},
 // ]
 
-//Criando uma rota padrão ou raiz
-app.get('/',(req,res)=>{
-    res.status(200).send('Aula de Prog Web Prof-Bruno')
-})
+// //Criando uma rota padrão ou raiz
+// app.get('/',(req,res)=>{
+//     res.status(200).send('Aula de Prog Web Prof-Bruno')
+// })
 
 function buscarAlunoporId(id) {
     return listas.filter(listas => listas.id == id)
@@ -26,22 +27,29 @@ function buscarAlunoporId(id) {
 
 //listar
 app.get('/listas',(req,res)=>{
-    res.status(200).send(listas);
+  const sql = "SELECT * FROM alunos;"
+  conexao.query(sql, (error, result)=>{
+    if (error) {
+      console.log(error)
+      res.status(404).json({'error': error})
+    } else {
+      res.status(200), send(result)
+    }
+  })
 })
+
 //bucar por id
 app.get('/listas/:id',(req,res)=>{
     //let index  = req.params.id
     //console.log(index)
     res.json(buscarAlunoporId(req.params.id));
 })
+
 //criar
 app.post('/listas',(req,res)=>{
     listas.push(req.body)
     res.status(201).send('Aluno cadastrdo com sucesso!')
 })
-
-
-
 
 //deletar errado 
 app.delete('/listas',(req,res)=>{

@@ -9,4 +9,6 @@ const conexao = mysql.createConnection({
     database: 'dbsenac'
 })
 
+conexao.connect()
+
 export default conexao
