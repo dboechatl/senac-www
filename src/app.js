@@ -4,14 +4,14 @@ const app = express()
 //indcar para o express para usar o body com jason
 app.use(express.json())
 
-//mock
-const listas=[
-    {id:1,nome:'José Paulo',grupo:'P'},
-    {id:2,nome:'Erick',grupo:'g'},
-    {id:3,nome:'Carlos',grupo:'P'},
-    {id:4,nome:'RaphaNide',grupo:'P'},
-    {id:5,nome:'Prefeito',grupo:'P'},
-]
+// //mock
+// const listas=[
+//    {id:1,nome:'José Paulo',grupo:'P'},
+//    {id:2,nome:'Erick',grupo:'g'},
+//    {id:3,nome:'Carlos',grupo:'P'},
+//    {id:4,nome:'RaphaNide',grupo:'P'},
+//    {id:5,nome:'Prefeito',grupo:'P'},
+// ]
 
 //Criando uma rota padrão ou raiz
 app.get('/',(req,res)=>{
