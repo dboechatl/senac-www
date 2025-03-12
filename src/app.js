@@ -1,5 +1,6 @@
 import express from 'express'
-import conexao from '../infra/conexao'
+import conexao from '../infra/conexao.js'
+
 const app = express()
 
 //indcar para o express para usar o body com jason
