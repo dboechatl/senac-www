@@ -52,7 +52,11 @@ app.get('/listas/:id',(req,res)=>{
         console.log(error)
         res.status(404).json({'error':error})
       } else {
-        res.status(200).send(row);
+        if (row) {
+          res.status(200).send(row);
+        } else {
+          res.status(404).send("Aluno não encontrado!")
+        }
       }
     })
 })
@@ -60,8 +64,17 @@ app.get('/listas/:id',(req,res)=>{
 
 //criar
 app.post('/listas',(req,res)=>{
-    listas.push(req.body)
-    res.status(201).send('Aluno cadastrdo com sucesso!')
+// listas.push(req.body)
+const aluno = req.body
+const sql = "INSERT INTO `dbsenac`.`alunos` SET ?;"
+conexao.query(sql, aluno, (error,result)=>{
+  if (error) {
+    console.log(error)
+    res.status(404).json({'error':error})
+  } else {
+      res.status(201).send(aluno);
+    }
+  })
 })
 
 
