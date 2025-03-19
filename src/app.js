@@ -19,15 +19,15 @@ app.use(express.json())
 //     res.status(200).send('Aula de Prog Web Prof-Bruno')
 // })
 
-function buscarAlunoporId(id) {
-    return listas.filter(listas => listas.id == id)
-}
+// function buscarAlunoporId(id) {
+//     return listas.filter(listas => listas.id == id)
+// }
 
 //Outras rotas
 
 //listar
 app.get('/listas',(req,res)=>{
-    const sql = "SELECT * FROM alunos;"
+    const sql = "SELECT * FROM dbsenac.alunos;"
     conexao.query(sql, (error,result)=>{
       if (error) {
         console.log(error)
@@ -37,19 +37,32 @@ app.get('/listas',(req,res)=>{
       }
     }) 
 })
+
+
 //bucar por id
 app.get('/listas/:id',(req,res)=>{
     //let index  = req.params.id
     //console.log(index)
-    res.json(buscarAlunoporId(req.params.id));
+    //res.json(buscarAlunoporId(req.params.id));
+    const id = req.params.id
+    const sql = "SELECT * FROM dbsenac.alunos WHERE id=?;"
+    conexao.query(sql, id, (error,result)=>{
+      const row = result[0]
+      if (error) {
+        console.log(error)
+        res.status(404).json({'error':error})
+      } else {
+        res.status(200).send(row);
+      }
+    })
 })
+
+
 //criar
 app.post('/listas',(req,res)=>{
     listas.push(req.body)
     res.status(201).send('Aluno cadastrdo com sucesso!')
 })
-
-
 
 
 //deletar errado 
@@ -63,31 +76,34 @@ app.delete('/listas',(req,res)=>{
 app.get('/teste', (req, res) => {
     res.status(200).send('Não é vc que testa');
   });
-  // Rota de exemplo 4: Retorna dados em formato JSON
-  app.get('/listasAlunos', (req, res) => {
-    const dados = [
-        {
-          nome: 'José',
-          idade: 23,
-          curso: 'Programação Web',
-          status: 'Ativo',
-        },
-        {
-          nome: 'Maria',
-          idade: 30,
-          curso: 'Design Gráfico',
-          status: 'Inativo',
-        },
-        {
-          nome: 'Carlos',
-          idade: 27,
-          curso: 'Engenharia de Software',
-          status: 'Ativo',
-        }
-      ];
-    res.status(200).json(dados);
-  });
-  
+
+
+// Rota de exemplo 4: Retorna dados em formato JSON
+app.get('/listasAlunos', (req, res) => {
+  const dados = [
+      {
+        nome: 'José',
+        idade: 23,
+        curso: 'Programação Web',
+        status: 'Ativo',
+      },
+      {
+        nome: 'Maria',
+        idade: 30,
+        curso: 'Design Gráfico',
+        status: 'Inativo',
+      },
+      {
+        nome: 'Carlos',
+        idade: 27,
+        curso: 'Engenharia de Software',
+        status: 'Ativo',
+      }
+    ];
+  res.status(200).json(dados);
+});
+
+
 //Expor o objeto para outras rotas 
 export default app
 
