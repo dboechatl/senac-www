@@ -1,5 +1,5 @@
 import express from 'express'
-import conexao from '../infra/conexao.js'
+import conexao from './app/database/conexao.js'
 const app = express()
 
 //indcar para o express para usar o body com jason
@@ -59,49 +59,6 @@ app.post('/listas', (req, res) => {
 })
 
 
-// //deletar errado 
-// app.delete('/listas',(req,res)=>{
-//     listas.pop(req.body)
-//     res.status(201).send('Aluno apagado com sucesso!')
-// })
-
-
-// //delete
-// app.delete('/listas/:id', (req, res) => {
-//   const id = req.params.id
-//   const sql = "DELETE FROM dbsenac.alunos WHERE id=?;"
-//   conexao.query(sql, id, (error, result) => {
-//     if (error) {
-//       console.log(error)
-//       res.status(404).json({ 'error': error })
-//     } else {
-//       res.status(200).json(result)
-//     } 
-//   })
-// })
-
-
-// // update por id
-// app.put('/listas/:id', (req, res) => {
-//   const id = req.params.id
-//   const sql = "DELETE FROM dbsenac.alunos WHERE id=?;"
-//   conexao.query(sql, [aluno, id], (error, result) => {
-//     const row = result[0]
-//     if (error) {
-//       console.log(error)
-//       return res.status(500).json({ 'error': 'Erro interno do servidor', 'details': error })
-//     }
-
-//     if (result.affectedRows === 0) {
-//       return res.status(404).json({'message': `Aluno com ID ${id} não encontrado.`})
-//     }
-    
-//     res.status(200).json({'message': `Aluno com ID ${id} atualizado com sucesso.`})
-    
-//   })
-// })
-
-
 // deletar por id
 app.delete('/delete/:id', (req, res) => {
   const id = req.params.id
@@ -114,11 +71,11 @@ app.delete('/delete/:id', (req, res) => {
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({'message': `Aluno com ID ${id} não encontrado.`})
+      return res.status(404).json({ 'message': `Aluno com ID ${id} não encontrado.` })
     }
-    
-    res.status(200).json({'message': `Aluno com ID ${id} excluído com sucesso.`})
-    
+
+    res.status(200).json({ 'message': `Aluno com ID ${id} excluído com sucesso.` })
+
   })
 })
 
@@ -127,7 +84,7 @@ app.delete('/delete/:id', (req, res) => {
 app.put('/update/:id', (req, res) => {
   const id = req.params.id;
   const aluno = req.body; // Pega as informações do aluno do corpo da requisição
-  
+
   const checkSql = "SELECT * FROM dbsenac.alunos WHERE id=?;";
   conexao.query(checkSql, [id], (error, result) => {
 
