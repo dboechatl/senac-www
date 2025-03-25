@@ -26,9 +26,7 @@ app.get('/listas',(req,res)=>{
 
 //bucar por id
 app.get('/listas/:id',(req,res)=>{
-    //let index  = req.params.id
-    //console.log(index)
-    //res.json(buscarAlunoporId(req.params.id));
+
     const id = req.params.id
     const sql = "SELECT * FROM dbsenac.alunos WHERE id=?;"
     conexao.query(sql, id, (error,result)=>{
@@ -49,15 +47,14 @@ app.get('/listas/:id',(req,res)=>{
 
 //criar
 app.post('/listas',(req,res)=>{
-// listas.push(req.body)
-const aluno = req.body
-const sql = "INSERT INTO `dbsenac`.`alunos` SET ?;"
-conexao.query(sql, aluno, (error,result)=>{
-  if (error) {
-    console.log(error)
-    res.status(404).json({'error':error})
-  } else {
-      res.status(201).send(aluno);
+  const aluno = req.body
+  const sql = "INSERT INTO `dbsenac`.`alunos` SET ?;"
+  conexao.query(sql, aluno, (error,result)=>{
+    if (error) {
+      console.log(error)
+      res.status(404).json({'error':error})
+    } else {
+        res.status(201).send(aluno);
     }
   })
 })
@@ -72,9 +69,7 @@ conexao.query(sql, aluno, (error,result)=>{
 
 //delete
 app.delete('/listas/:id',(req,res)=>{
-  //let index  = req.params.id
-  //console.log(index)
-  //res.json(buscarAlunoporId(req.params.id));
+
   const id = req.params.id
   const sql = "DELETE FROM dbsenac.alunos WHERE id=?;"
   conexao.query(sql, id, (error,result)=>{
