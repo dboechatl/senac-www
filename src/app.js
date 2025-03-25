@@ -11,50 +11,49 @@ app.use(express.json())
 // **ANOTAR IDEIAS PARA MELHORAR O CÓDIGO, ENTRADA, SAÍDA, ETC**
 
 //listar
-app.get('/listas',(req,res)=>{
-    const sql = "SELECT * FROM dbsenac.alunos;"
-    conexao.query(sql, (error,result)=>{
-      if (error) {
-        console.log(error)
-        res.status(404).json({'error':error})
-      } else {
-        res.status(200).send(result);
-      }
-    }) 
+app.get('/listas', (req, res) => {
+  const sql = "SELECT * FROM dbsenac.alunos;"
+  conexao.query(sql, (error, result) => {
+    if (error) {
+      console.log(error)
+      res.status(404).json({ 'error': error })
+    } else {
+      res.status(200).send(result);
+    }
+  })
 })
 
 
 //bucar por id
-app.get('/listas/:id',(req,res)=>{
-
-    const id = req.params.id
-    const sql = "SELECT * FROM dbsenac.alunos WHERE id=?;"
-    conexao.query(sql, id, (error,result)=>{
-      const row = result[0]
-      if (error) {
-        console.log(error)
-        res.status(404).json({'error':error})
+app.get('/listas/:id', (req, res) => {
+  const id = req.params.id
+  const sql = "SELECT * FROM dbsenac.alunos WHERE id=?;"
+  conexao.query(sql, id, (error, result) => {
+    const row = result[0]
+    if (error) {
+      console.log(error)
+      res.status(404).json({ 'error': error })
+    } else {
+      if (row) {
+        res.status(200).send(row);
       } else {
-        if (row) {
-          res.status(200).send(row);
-        } else {
-          res.status(404).send("Aluno não encontrado!")
-        }
+        res.status(404).send("Aluno não encontrado!")
       }
-    })
+    }
+  })
 })
 
 
 //criar
-app.post('/listas',(req,res)=>{
+app.post('/listas', (req, res) => {
   const aluno = req.body
   const sql = "INSERT INTO `dbsenac`.`alunos` SET ?;"
-  conexao.query(sql, aluno, (error,result)=>{
+  conexao.query(sql, aluno, (error, result) => {
     if (error) {
       console.log(error)
-      res.status(404).json({'error':error})
+      res.status(404).json({ 'error': error })
     } else {
-        res.status(201).send(aluno);
+      res.status(201).send(aluno);
     }
   })
 })
@@ -67,22 +66,40 @@ app.post('/listas',(req,res)=>{
 // })
 
 
-//delete
-app.delete('/listas/:id',(req,res)=>{
+// //delete
+// app.delete('/listas/:id', (req, res) => {
+//   const id = req.params.id
+//   const sql = "DELETE FROM dbsenac.alunos WHERE id=?;"
+//   conexao.query(sql, id, (error, result) => {
+//     if (error) {
+//       console.log(error)
+//       res.status(404).json({ 'error': error })
+//     } else {
+//       res.status(200).json(result)
+//     } 
+//   })
+// })
 
+
+// deletar por id
+app.delete('/delete/:id', (req, res) => {
   const id = req.params.id
   const sql = "DELETE FROM dbsenac.alunos WHERE id=?;"
-  conexao.query(sql, id, (error,result)=>{
+  conexao.query(sql, [id], (error, result) => {
+    const row = result[0]
     if (error) {
       console.log(error)
-      res.status(404).json({'error':error})
-    } else {
-        res.status(200).json(result)
+      return res.status(500).json({ 'error': 'Erro interno do servidor', 'details': error })
     }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({'message': `Aluno com ID ${id} não encontrado.`})
+    }
+    
+    res.status(200).json({'message': `Aluno com ID ${id} excluído com sucesso.`})
+    
   })
 })
-
-
 
 
 
@@ -103,32 +120,32 @@ app.delete('/listas/:id',(req,res)=>{
 
 // Rota de exemplo teste: Retorna uma mensagem simples
 app.get('/teste', (req, res) => {
-    res.status(200).send('Não é vc que testa');
-  });
+  res.status(200).send('Não é vc que testa');
+});
 
 
 // Rota de exemplo 4: Retorna dados em formato JSON
 app.get('/listasAlunos', (req, res) => {
   const dados = [
-      {
-        nome: 'José',
-        idade: 23,
-        curso: 'Programação Web',
-        status: 'Ativo',
-      },
-      {
-        nome: 'Maria',
-        idade: 30,
-        curso: 'Design Gráfico',
-        status: 'Inativo',
-      },
-      {
-        nome: 'Carlos',
-        idade: 27,
-        curso: 'Engenharia de Software',
-        status: 'Ativo',
-      }
-    ];
+    {
+      nome: 'José',
+      idade: 23,
+      curso: 'Programação Web',
+      status: 'Ativo',
+    },
+    {
+      nome: 'Maria',
+      idade: 30,
+      curso: 'Design Gráfico',
+      status: 'Inativo',
+    },
+    {
+      nome: 'Carlos',
+      idade: 27,
+      curso: 'Engenharia de Software',
+      status: 'Ativo',
+    }
+  ];
   res.status(200).json(dados);
 });
 
