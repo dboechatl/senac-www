@@ -32,18 +32,6 @@ app.delete('/delete/:id', AlunoController.delete)
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 // Rota de exemplo teste: Retorna uma mensagem simples
 app.get('/teste', (req, res) => {
   res.status(200).send('Não é vc que testa');

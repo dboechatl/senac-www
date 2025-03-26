@@ -1,17 +1,11 @@
 import conexao from "../database/conexao.js";
+import AlunoRepository from "../repositories/AlunoRepository.js";
 
 class AlunoController {
     // listar tudo
     index(req, res) {
-        const sql = "SELECT * FROM dbsenac.alunos;"
-        conexao.query(sql, (error, result) => {
-            if (error) {
-                // console.log(error)
-                res.status(404).json({ 'error': error })
-            } else {
-                res.status(200).json(result);
-            }
-        })
+        const row = AlunoRepository.findAll()
+        res.json(row)
     }
 
     // listar por id
@@ -25,9 +19,9 @@ class AlunoController {
                 res.status(404).json({ 'error': error })
             } else {
                 if (row) {
-                    res.status(200).send(row);
+                    res.status(200).json(row);
                 } else {
-                    res.status(404).send("Aluno não encontrado!")
+                    res.status(404).json("Aluno não encontrado!")
                 }
             }
         })
@@ -42,7 +36,7 @@ class AlunoController {
                 console.log(error)
                 res.status(404).json({ 'error': error })
             } else {
-                res.status(201).send(aluno);
+                res.status(201).json(aluno);
             }
         })
     }
