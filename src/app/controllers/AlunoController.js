@@ -3,42 +3,26 @@ import AlunoRepository from "../repositories/AlunoRepository.js";
 
 class AlunoController {
     // listar tudo
-    index(req, res) {
-        const row = AlunoRepository.findAll()
+    async index(req, res) {
+        // findAll retorna uma promise e não temos como garantir o tempo de resposta
+        const row = await AlunoRepository.findAll()
         res.json(row)
     }
 
     // listar por id
-    show(req, res) {
-        const id = req.params.id
-        const sql = "SELECT * FROM dbsenac.alunos WHERE id=?;"
-        conexao.query(sql, id, (error, result) => {
-            const row = result[0]
-            if (error) {
-                console.log(error)
-                res.status(404).json({ 'error': error })
-            } else {
-                if (row) {
-                    res.status(200).json(row);
-                } else {
-                    res.status(404).json("Aluno não encontrado!")
-                }
-            }
-        })
+    async show(req, res) {
+        const id = await req.params.id
+        const row = await AlunoRepository.findById(id)
+        res.json(row) 
     }
 
     //criar dados
-    store(req, res) {
+    async store(req, res) {
         const aluno = req.body
-        const sql = "INSERT INTO `dbsenac`.`alunos` SET ?;"
-        conexao.query(sql, aluno, (error, result) => {
-            if (error) {
-                console.log(error)
-                res.status(404).json({ 'error': error })
-            } else {
-                res.status(201).json(aluno);
-            }
-        })
+        console.log(aluno)
+        console.log(aluno)
+        const row = await AlunoRepository.create(aluno)
+        res.json(row) 
     }
 
     // atualizar dados
