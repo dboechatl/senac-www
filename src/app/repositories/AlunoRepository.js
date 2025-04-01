@@ -13,6 +13,7 @@ class AlunoRepository {
                 // res.status(404).json({ 'error': error })
                 return error
             } else {
+                console.log(result)
                 return result
                 // res.status(200).json(result);
             }
