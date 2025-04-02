@@ -1,4 +1,4 @@
-import conexao, { consulta } from "../database/conexao.js";
+import { consulta } from "../database/conexao.js";
 
 class AlunoRepository {
     // cria um novo elemento

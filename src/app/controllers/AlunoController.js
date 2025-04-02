@@ -1,4 +1,3 @@
-import conexao from "../database/conexao.js";
 import AlunoRepository from "../repositories/AlunoRepository.js";
 
 class AlunoController {
