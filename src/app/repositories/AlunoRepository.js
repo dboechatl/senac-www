@@ -46,10 +46,31 @@ class AlunoRepository {
     }
 
     // atualizar
-    update() { }
+    update(aluno, id) {
+        const sql = "UPDATE dbsenac.alunos SET ? WHERE id=?;";
+        return new Promise((resolve, reject) => {
+            conexao.query(sql, [aluno,id], (error, result) => {
+                if (error) return reject('Não foi possível atualizar o aluno')
+                // mostra o resultado de forma adequada (transforma para string)
+                const row = JSON.parse(JSON.stringify(result))
+                return resolve(row)
+            })
+        })
+    }
 
     // delete
-    delete() { }
+    delete(id) {
+        const sql = "DELETE FROM dbsenac.alunos WHERE id=?;"
+        return new Promise((resolve, reject) => {
+            conexao.query(sql, id, (error, result) => {
+                console.log(result)
+                if (error) return reject('Não foi possível apagar')
+                // mostra o resultado de forma adequada (transforma para string)
+                const row = JSON.parse(JSON.stringify(result))
+                return resolve(row)
+            })
+        })
+    }
 }
 
 
