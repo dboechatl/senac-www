@@ -19,7 +19,7 @@ conexao.connect()
  * @returns objeto da Promise
  */
 
-export const consulta = (sql, params, messageReject) => {
+export const consulta = (sql, params='', messageReject) => {
     return new Promise((resolve, reject) => {
         conexao.query(sql, params, (error, result) => {
             if (error) return reject(messageReject)
